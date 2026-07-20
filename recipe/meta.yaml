@@ -35,7 +35,8 @@ requirements:
     - python-dateutil >=2.8.2,<3  # [py<311]
     - types-protobuf >=3.20,<8.0.0
     - typing_extensions >=4.2.0,<5
-tests:
+
+test:
   imports:
     - temporalio
   commands:
@@ -44,16 +45,21 @@ tests:
     - pip
 
 about:
-  summary: Temporal.io Python SDK
+  home: https://github.com/temporalio/sdk-python
   license: MIT
+  license_family: MIT
   license_file:
     - LICENSE
     - temporalio/bridge/THIRDPARTY.yml
     - temporalio/bridge/sdk-core/LICENSE.txt
     - temporalio/bridge/sdk-core/crates/protos/protos/api_cloud_upstream/LICENSE
     - temporalio/bridge/sdk-core/crates/protos/protos/api_upstream/LICENSE
-  homepage: https://github.com/temporalio/sdk-python
-  repository: https://github.com/temporalio/sdk-python
+  summary: Temporal.io Python SDK
+  description: |
+    Temporal is a distributed, scalable, durable, and highly available orchestration engine used to execute asynchronous,
+    long-running business logic in a scalable and resilient way.
+  dev_url: https://github.com/temporalio/sdk-python
+  doc_url: https://github.com/temporalio/sdk-python
 
 extra:
   recipe-maintainers:
