@@ -85,3 +85,5 @@ extra:
     - nic-chira
     - fzding
     - chrisdeutsch
+  skip-linnts:
+    - reachable_url
