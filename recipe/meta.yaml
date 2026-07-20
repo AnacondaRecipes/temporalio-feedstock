@@ -1,35 +1,27 @@
-schema_version: 1
-
-context:
-  name: temporalio
-  version: 1.30.0
+{% set name = "temporalio" %}
+{% set version = "1.30.0" %}
 
 package:
-  name: ${{ name|lower }}
-  version: ${{ version }}
+  name: {{ name }}
+  version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/temporalio-${{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: 7c025919511bb465392d547e48ccb85fd560a995db4ebcc82fdb43cddf088e6f
 
 build:
   number: 0
-  skip: win
+  skip: true  # [py<310]
   script:
-    - ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
     - cd temporalio/bridge
     - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 
 requirements:
   build:
-    - if: build_platform != target_platform
-      then:
-        - python
-        - cross-python_${{ target_platform }}
-        - maturin >=1.0,<2.0
-    - ${{ compiler('rust') }}
-    - ${{ compiler('c') }}
-    - ${{ stdlib('c') }}
+    - {{ stdlib('c') }}
+    - {{ compiler('c') }}
+    - {{ compiler('rust') }}
     - libprotobuf
     - cargo-bundle-licenses
   host:
@@ -40,15 +32,16 @@ requirements:
     - python
     - nexus-rpc ==1.4.0
     - protobuf >=3.20,<8.0.0
-    - if: match(python, "<3.11")
-      then: python-dateutil >=2.8.2,<3
+    - python-dateutil >=2.8.2,<3  # [py<311]
     - types-protobuf >=3.20,<8.0.0
     - typing_extensions >=4.2.0,<5
 tests:
-  - python:
-      imports:
-        - temporalio
-      pip_check: true
+  imports:
+    - temporalio
+  commands:
+    - pip check
+  requires:
+    - pip
 
 about:
   summary: Temporal.io Python SDK
